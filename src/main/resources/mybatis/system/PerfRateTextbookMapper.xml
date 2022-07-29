@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.textbook.mapper.PerfRateTextbookMapper">
+    
+    <resultMap type="PerfRateTextbook" id="PerfRateTextbookResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="textbookName"    column="textbook_name"    />
+        <result property="press"    column="press"    />
+        <result property="descr"    column="descr"    />
+        <result property="edition"    column="edition"    />
+        <result property="publishDate"    column="publish_date"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="publishUnit"    column="publish_unit"    />
+        <result property="priceCert"    column="price_cert"    />
+        <result property="seal"    column="seal"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateTextbookVo">
+        select id, dept_id, user_id, textbook_name, press, descr, edition, publish_date, price_amount, publish_unit, price_cert, seal, create_time from t_perf_rate_textbook
+    </sql>
+
+    <select id="selectPerfRateTextbookList" parameterType="PerfRateTextbook" resultMap="PerfRateTextbookResult">
+        <include refid="selectPerfRateTextbookVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="textbookName != null  and textbookName != ''"> and textbook_name like concat('%', #{textbookName}, '%')</if>
+            <if test="press != null  and press != ''"> and press = #{press}</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="edition != null  and edition != ''"> and edition = #{edition}</if>
+            <if test="publishDate != null "> and publish_date = #{publishDate}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+            <if test="publishUnit != null  and publishUnit != ''"> and publish_unit = #{publishUnit}</if>
+            <if test="priceCert != null  and priceCert != ''"> and price_cert = #{priceCert}</if>
+            <if test="seal != null  and seal != ''"> and seal = #{seal}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateTextbookById" parameterType="Long" resultMap="PerfRateTextbookResult">
+        <include refid="selectPerfRateTextbookVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateTextbook" parameterType="PerfRateTextbook" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_textbook
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="textbookName != null">textbook_name,</if>
+            <if test="press != null">press,</if>
+            <if test="descr != null">descr,</if>
+            <if test="edition != null">edition,</if>
+            <if test="publishDate != null">publish_date,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="publishUnit != null">publish_unit,</if>
+            <if test="priceCert != null">price_cert,</if>
+            <if test="seal != null">seal,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="textbookName != null">#{textbookName},</if>
+            <if test="press != null">#{press},</if>
+            <if test="descr != null">#{descr},</if>
+            <if test="edition != null">#{edition},</if>
+            <if test="publishDate != null">#{publishDate},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="publishUnit != null">#{publishUnit},</if>
+            <if test="priceCert != null">#{priceCert},</if>
+            <if test="seal != null">#{seal},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateTextbook" parameterType="PerfRateTextbook">
+        update t_perf_rate_textbook
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="textbookName != null">textbook_name = #{textbookName},</if>
+            <if test="press != null">press = #{press},</if>
+            <if test="descr != null">descr = #{descr},</if>
+            <if test="edition != null">edition = #{edition},</if>
+            <if test="publishDate != null">publish_date = #{publishDate},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="publishUnit != null">publish_unit = #{publishUnit},</if>
+            <if test="priceCert != null">price_cert = #{priceCert},</if>
+            <if test="seal != null">seal = #{seal},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateTextbookById" parameterType="Long">
+        delete from t_perf_rate_textbook where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateTextbookByIds" parameterType="String">
+        delete from t_perf_rate_textbook where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.base.mapper.PerfRateBaseMapper">
+    
+    <resultMap type="PerfRateBase" id="PerfRateBaseResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="type"    column="type"    />
+        <result property="resultName"    column="result_name"    />
+        <result property="grade"    column="grade"    />
+        <result property="userId"    column="user_id"    />
+        <result property="priceYear"    column="price_year"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="priceCert"    column="price_cert"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateBaseVo">
+        select id, dept_id, type, result_name, grade, user_id, price_year, price_amount, price_cert, create_time from t_perf_rate_base
+    </sql>
+
+    <select id="selectPerfRateBaseList" parameterType="PerfRateBase" resultMap="PerfRateBaseResult">
+        <include refid="selectPerfRateBaseVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="resultName != null  and resultName != ''"> and result_name like concat('%', #{resultName}, '%')</if>
+            <if test="grade != null and grade != ''"> and grade = #{grade}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="priceYear != null "> and price_year = #{priceYear}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+            <if test="priceCert != null  and priceCert != ''"> and price_cert = #{priceCert}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateBaseById" parameterType="Long" resultMap="PerfRateBaseResult">
+        <include refid="selectPerfRateBaseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateBase" parameterType="PerfRateBase" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="type != null">type,</if>
+            <if test="resultName != null">result_name,</if>
+            <if test="grade != null and grade != ''">grade,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="priceYear != null">price_year,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="priceCert != null">price_cert,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="resultName != null">#{resultName},</if>
+            <if test="grade != null and grade != ''">#{grade},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="priceYear != null">#{priceYear},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="priceCert != null">#{priceCert},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateBase" parameterType="PerfRateBase">
+        update t_perf_rate_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="resultName != null">result_name = #{resultName},</if>
+            <if test="grade != null and grade != ''">grade = #{grade},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="priceYear != null">price_year = #{priceYear},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="priceCert != null">price_cert = #{priceCert},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateBaseById" parameterType="Long">
+        delete from t_perf_rate_base where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateBaseByIds" parameterType="String">
+        delete from t_perf_rate_base where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

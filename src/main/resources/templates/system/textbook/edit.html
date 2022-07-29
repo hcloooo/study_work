@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改教学-教材业绩奖励')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-textbook-edit" th:object="${perfRateTextbook}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">院系：</label>
+                <div class="col-sm-8">
+                    <input name="deptId" th:field="*{deptId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="userId" th:field="*{userId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教材名称：</label>
+                <div class="col-sm-8">
+                    <input name="textbookName" th:field="*{textbookName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出版社：</label>
+                <div class="col-sm-8">
+                    <input name="press" th:field="*{press}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">参编情况：</label>
+                <div class="col-sm-8">
+                    <input name="descr" th:field="*{descr}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">版次：</label>
+                <div class="col-sm-8">
+                    <input name="edition" th:field="*{edition}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出版时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="publishDate" th:value="${#dates.format(perfRateTextbook.publishDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">奖励金额：</label>
+                <div class="col-sm-8">
+                    <input name="priceAmount" th:field="*{priceAmount}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">发文单位：</label>
+                <div class="col-sm-8">
+                    <input name="publishUnit" th:field="*{publishUnit}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">奖励证书：</label>
+                <div class="col-sm-8">
+                    <input name="priceCert" th:field="*{priceCert}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公章：</label>
+                <div class="col-sm-8">
+                    <input name="seal" th:field="*{seal}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/textbook";
+        $("#form-textbook-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-textbook-edit').serialize());
+            }
+        }
+
+        $("input[name='publishDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

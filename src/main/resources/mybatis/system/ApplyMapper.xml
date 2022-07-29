@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.apply.mapper.ApplyMapper">
+    
+    <resultMap type="Apply" id="ApplyResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="priceId"    column="price_id"    />
+        <result property="descr"    column="descr"    />
+        <result property="applyRoleId"    column="apply_role_id"    />
+        <result property="applyStatus"    column="apply_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="priceName"    column="price_name"    />
+        <result property="roleName"    column="role_name"    />
+    </resultMap>
+
+    <sql id="selectApplyVo">
+        select a.id, a.user_id, a.price_id, a.descr, a.apply_role_id, a.apply_status, a.create_time, a.update_time
+                , s.price_type price_name, r.role_name
+        from t_apply a
+                 inner join t_price_standard s on a.price_id = s.id
+                 left join sys_role r on a.apply_role_id = r.role_id
+    </sql>
+
+    <select id="selectApplyList" parameterType="Apply" resultMap="ApplyResult">
+        <include refid="selectApplyVo"/>
+        <where>  
+            <if test="userId != null "> and a.user_id = #{userId}</if>
+            <if test="priceId != null "> and a.price_id = #{priceId}</if>
+            <if test="applyStatus != null "> and a.apply_status = #{applyStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectApplyById" parameterType="Long" resultMap="ApplyResult">
+        <include refid="selectApplyVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertApply" parameterType="Apply" useGeneratedKeys="true" keyProperty="id">
+        insert into t_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="priceId != null">price_id,</if>
+            <if test="descr != null">descr,</if>
+            <if test="applyRoleId != null">apply_role_id,</if>
+            <if test="applyStatus != null">apply_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="priceId != null">#{priceId},</if>
+            <if test="descr != null">#{descr},</if>
+            <if test="applyRoleId != null">#{applyRoleId},</if>
+            <if test="applyStatus != null">#{applyStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApply" parameterType="Apply">
+        update t_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="priceId != null">price_id = #{priceId},</if>
+            <if test="descr != null">descr = #{descr},</if>
+            <if test="applyRoleId != null">apply_role_id = #{applyRoleId},</if>
+            <if test="applyStatus != null">apply_status = #{applyStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApplyById" parameterType="Long">
+        delete from t_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteApplyByIds" parameterType="String">
+        delete from t_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

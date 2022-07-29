@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.other.mapper.PerfRateOtherMapper">
+    
+    <resultMap type="PerfRateOther" id="PerfRateOtherResult">
+        <result property="id"    column="id"    />
+        <result property="projName"    column="proj_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="priceTime"    column="price_time"    />
+        <result property="priceUnit"    column="price_unit"    />
+        <result property="priceGrade"    column="price_grade"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateOtherVo">
+        select id, proj_name, user_id, unit, price_time, price_unit, price_grade, price_amount, create_time from t_perf_rate_other
+    </sql>
+
+    <select id="selectPerfRateOtherList" parameterType="PerfRateOther" resultMap="PerfRateOtherResult">
+        <include refid="selectPerfRateOtherVo"/>
+        <where>  
+            <if test="projName != null  and projName != ''"> and proj_name like concat('%', #{projName}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="priceTime != null "> and price_time = #{priceTime}</if>
+            <if test="priceUnit != null  and priceUnit != ''"> and price_unit = #{priceUnit}</if>
+            <if test="priceGrade != null  and priceGrade != ''"> and price_grade = #{priceGrade}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateOtherById" parameterType="Long" resultMap="PerfRateOtherResult">
+        <include refid="selectPerfRateOtherVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateOther" parameterType="PerfRateOther" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_other
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projName != null">proj_name,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="unit != null">unit,</if>
+            <if test="priceTime != null">price_time,</if>
+            <if test="priceUnit != null">price_unit,</if>
+            <if test="priceGrade != null">price_grade,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projName != null">#{projName},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="priceTime != null">#{priceTime},</if>
+            <if test="priceUnit != null">#{priceUnit},</if>
+            <if test="priceGrade != null">#{priceGrade},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateOther" parameterType="PerfRateOther">
+        update t_perf_rate_other
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projName != null">proj_name = #{projName},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="priceTime != null">price_time = #{priceTime},</if>
+            <if test="priceUnit != null">price_unit = #{priceUnit},</if>
+            <if test="priceGrade != null">price_grade = #{priceGrade},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateOtherById" parameterType="Long">
+        delete from t_perf_rate_other where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateOtherByIds" parameterType="String">
+        delete from t_perf_rate_other where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

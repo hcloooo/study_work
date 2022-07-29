@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.standard.mapper.WorkStandardMapper">
+    
+    <resultMap type="WorkStandard" id="WorkStandardResult">
+        <result property="id"    column="id"    />
+        <result property="workName"    column="work_name"    />
+        <result property="work"    column="work"    />
+        <result property="total"    column="total"    />
+    </resultMap>
+
+    <sql id="selectWorkStandardVo">
+        select id, work_name, work, total from t_work_standard
+    </sql>
+
+    <select id="selectWorkStandardList" parameterType="WorkStandard" resultMap="WorkStandardResult">
+        <include refid="selectWorkStandardVo"/>
+        <where>  
+            <if test="workName != null  and workName != ''"> and work_name like concat('%', #{workName}, '%')</if>
+            <if test="work != null  and work != ''"> and work = #{work}</if>
+            <if test="total != null  and total != ''"> and total = #{total}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkStandardById" parameterType="Long" resultMap="WorkStandardResult">
+        <include refid="selectWorkStandardVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWorkStandard" parameterType="WorkStandard">
+        insert into t_work_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="workName != null">work_name,</if>
+            <if test="work != null">work,</if>
+            <if test="total != null">total,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="workName != null">#{workName},</if>
+            <if test="work != null">#{work},</if>
+            <if test="total != null">#{total},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkStandard" parameterType="WorkStandard">
+        update t_work_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workName != null">work_name = #{workName},</if>
+            <if test="work != null">work = #{work},</if>
+            <if test="total != null">total = #{total},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorkStandardById" parameterType="Long">
+        delete from t_work_standard where id = #{id}
+    </delete>
+
+    <delete id="deleteWorkStandardByIds" parameterType="String">
+        delete from t_work_standard where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

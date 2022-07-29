@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.vert.mapper.PerfRateVertMapper">
+    
+    <resultMap type="PerfRateVert" id="PerfRateVertResult">
+        <result property="id"    column="id"    />
+        <result property="subjectTime"    column="subject_time"    />
+        <result property="subjectName"    column="subject_name"    />
+        <result property="subjectType"    column="subject_type"    />
+        <result property="subjectFrom"    column="subject_from"    />
+        <result property="grade"    column="grade"    />
+        <result property="totalMoney"    column="total_money"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="subjectNo"    column="subject_no"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateVertVo">
+        select id, subject_time, subject_name, subject_type, subject_from, grade, total_money, price_amount, dept_id, user_id, subject_no, create_time from t_perf_rate_vert
+    </sql>
+
+    <select id="selectPerfRateVertList" parameterType="PerfRateVert" resultMap="PerfRateVertResult">
+        <include refid="selectPerfRateVertVo"/>
+        <where>  
+            <if test="subjectTime != null "> and subject_time = #{subjectTime}</if>
+            <if test="subjectName != null  and subjectName != ''"> and subject_name like concat('%', #{subjectName}, '%')</if>
+            <if test="subjectType != null  and subjectType != ''"> and subject_type = #{subjectType}</if>
+            <if test="subjectFrom != null  and subjectFrom != ''"> and subject_from = #{subjectFrom}</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+            <if test="totalMoney != null "> and total_money = #{totalMoney}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="subjectNo != null  and subjectNo != ''"> and subject_no = #{subjectNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateVertById" parameterType="Long" resultMap="PerfRateVertResult">
+        <include refid="selectPerfRateVertVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateVert" parameterType="PerfRateVert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_vert
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subjectTime != null">subject_time,</if>
+            <if test="subjectName != null">subject_name,</if>
+            <if test="subjectType != null">subject_type,</if>
+            <if test="subjectFrom != null">subject_from,</if>
+            <if test="grade != null">grade,</if>
+            <if test="totalMoney != null">total_money,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="subjectNo != null">subject_no,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subjectTime != null">#{subjectTime},</if>
+            <if test="subjectName != null">#{subjectName},</if>
+            <if test="subjectType != null">#{subjectType},</if>
+            <if test="subjectFrom != null">#{subjectFrom},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="totalMoney != null">#{totalMoney},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="subjectNo != null">#{subjectNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateVert" parameterType="PerfRateVert">
+        update t_perf_rate_vert
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subjectTime != null">subject_time = #{subjectTime},</if>
+            <if test="subjectName != null">subject_name = #{subjectName},</if>
+            <if test="subjectType != null">subject_type = #{subjectType},</if>
+            <if test="subjectFrom != null">subject_from = #{subjectFrom},</if>
+            <if test="grade != null">grade = #{grade},</if>
+            <if test="totalMoney != null">total_money = #{totalMoney},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="subjectNo != null">subject_no = #{subjectNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateVertById" parameterType="Long">
+        delete from t_perf_rate_vert where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateVertByIds" parameterType="String">
+        delete from t_perf_rate_vert where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

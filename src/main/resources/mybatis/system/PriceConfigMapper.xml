@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.config.mapper.PriceConfigMapper">
+    
+    <resultMap type="PriceConfig" id="PriceConfigResult">
+        <result property="id"    column="id"    />
+        <result property="schoolType"    column="school_type"    />
+        <result property="rate"    column="rate"    />
+    </resultMap>
+
+    <sql id="selectPriceConfigVo">
+        select id, school_type, rate from t_price_config
+    </sql>
+
+    <select id="selectPriceConfigList" parameterType="PriceConfig" resultMap="PriceConfigResult">
+        <include refid="selectPriceConfigVo"/>
+        <where>  
+            <if test="schoolType != null  and schoolType != ''"> and school_type = #{schoolType}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+        </where>
+    </select>
+    
+    <select id="selectPriceConfigById" parameterType="Long" resultMap="PriceConfigResult">
+        <include refid="selectPriceConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPriceConfig" parameterType="PriceConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_price_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="schoolType != null">school_type,</if>
+            <if test="rate != null">rate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="schoolType != null">#{schoolType},</if>
+            <if test="rate != null">#{rate},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePriceConfig" parameterType="PriceConfig">
+        update t_price_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="schoolType != null">school_type = #{schoolType},</if>
+            <if test="rate != null">rate = #{rate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePriceConfigById" parameterType="Long">
+        delete from t_price_config where id = #{id}
+    </delete>
+
+    <delete id="deletePriceConfigByIds" parameterType="String">
+        delete from t_price_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

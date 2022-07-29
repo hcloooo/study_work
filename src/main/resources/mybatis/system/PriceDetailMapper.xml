@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.detail.mapper.PriceDetailMapper">
+    
+    <resultMap type="PriceDetail" id="PriceDetailResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="projName"    column="proj_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="projId"    column="proj_id"    />
+    </resultMap>
+
+    <sql id="selectPriceDetailVo">
+        select id, user_id, price_amount, price_type, proj_name, create_time, proj_id from t_price_detail
+    </sql>
+
+    <select id="selectPriceDetailList" parameterType="PriceDetail" resultMap="PriceDetailResult">
+        <include refid="selectPriceDetailVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+            <if test="priceType != null  and priceType != ''"> and price_type = #{priceType}</if>
+            <if test="projId != null"> and proj_id = #{projId}</if>
+            <if test="projName != null  and projName != ''"> and proj_name like concat('%', #{projName}, '%')</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectPriceDetailById" parameterType="Long" resultMap="PriceDetailResult">
+        <include refid="selectPriceDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPriceDetail" parameterType="PriceDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into t_price_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="priceType != null">price_type,</if>
+            <if test="projName != null">proj_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="projId != null">proj_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="priceType != null">#{priceType},</if>
+            <if test="projName != null">#{projName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="projId != null">#{projId},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePriceDetail" parameterType="PriceDetail">
+        update t_price_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="projName != null">proj_name = #{projName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="projId != null">proj_id = #{projId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePriceDetailById" parameterType="Long">
+        delete from t_price_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePriceDetailByIds" parameterType="String">
+        delete from t_price_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

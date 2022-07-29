@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.skill.mapper.PerfRateSkillMapper">
+    
+    <resultMap type="PerfRateSkill" id="PerfRateSkillResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="skillName"    column="skill_name"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="standard"    column="standard"    />
+        <result property="sortNo"    column="sort_no"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateSkillVo">
+        select id, dept_id, skill_name, publish_time, standard, sort_no, price_amount, create_time from t_perf_rate_skill
+    </sql>
+
+    <select id="selectPerfRateSkillList" parameterType="PerfRateSkill" resultMap="PerfRateSkillResult">
+        <include refid="selectPerfRateSkillVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="skillName != null  and skillName != ''"> and skill_name like concat('%', #{skillName}, '%')</if>
+            <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+            <if test="standard != null  and standard != ''"> and standard = #{standard}</if>
+            <if test="sortNo != null "> and sort_no = #{sortNo}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateSkillById" parameterType="Long" resultMap="PerfRateSkillResult">
+        <include refid="selectPerfRateSkillVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateSkill" parameterType="PerfRateSkill" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_skill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="skillName != null">skill_name,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="standard != null">standard,</if>
+            <if test="sortNo != null">sort_no,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="skillName != null">#{skillName},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="standard != null">#{standard},</if>
+            <if test="sortNo != null">#{sortNo},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateSkill" parameterType="PerfRateSkill">
+        update t_perf_rate_skill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="skillName != null">skill_name = #{skillName},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="standard != null">standard = #{standard},</if>
+            <if test="sortNo != null">sort_no = #{sortNo},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateSkillById" parameterType="Long">
+        delete from t_perf_rate_skill where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateSkillByIds" parameterType="String">
+        delete from t_perf_rate_skill where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

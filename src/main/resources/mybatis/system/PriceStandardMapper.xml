@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.standard.mapper.PriceStandardMapper">
+    
+    <resultMap type="PriceStandard" id="PriceStandardResult">
+        <result property="id"    column="id"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="standard"    column="standard"    />
+    </resultMap>
+
+    <sql id="selectPriceStandardVo">
+        select id, price_type, standard from t_price_standard
+    </sql>
+
+    <select id="selectPriceStandardList" parameterType="PriceStandard" resultMap="PriceStandardResult">
+        <include refid="selectPriceStandardVo"/>
+        <where>  
+            <if test="priceType != null  and priceType != ''"> and price_type = #{priceType}</if>
+            <if test="standard != null "> and standard = #{standard}</if>
+        </where>
+    </select>
+    
+    <select id="selectPriceStandardById" parameterType="Long" resultMap="PriceStandardResult">
+        <include refid="selectPriceStandardVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPriceStandard" parameterType="PriceStandard" useGeneratedKeys="true" keyProperty="id">
+        insert into t_price_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="priceType != null">price_type,</if>
+            <if test="standard != null">standard,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="priceType != null">#{priceType},</if>
+            <if test="standard != null">#{standard},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePriceStandard" parameterType="PriceStandard">
+        update t_price_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="standard != null">standard = #{standard},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePriceStandardById" parameterType="Long">
+        delete from t_price_standard where id = #{id}
+    </delete>
+
+    <delete id="deletePriceStandardByIds" parameterType="String">
+        delete from t_price_standard where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

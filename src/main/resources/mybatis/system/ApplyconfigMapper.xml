@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.applyconfig.mapper.ApplyconfigMapper">
+    
+    <resultMap type="Applyconfig" id="ApplyconfigResult">
+        <result property="id"    column="id"    />
+        <result property="priceId"    column="price_id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="sortNum"    column="sort_num"    />
+        <result property="priceName"    column="price_name"    />
+        <result property="roleName"    column="role_name"    />
+    </resultMap>
+
+    <sql id="selectApplyconfigVo">
+        select a.id, a.price_id, a.role_id, a.sort_num, s.price_type price_name, r.role_name from t_applyconfig a
+            inner join t_price_standard s on a.price_id = s.id
+            inner join sys_role r on a.role_id = r.role_id
+    </sql>
+
+    <select id="selectApplyconfigList" parameterType="Applyconfig" resultMap="ApplyconfigResult">
+        <include refid="selectApplyconfigVo"/>
+        <where>  
+            <if test="priceId != null "> and a.price_id = #{priceId}</if>
+        </where>
+        order by price_id, sort_num asc
+    </select>
+    
+    <select id="selectApplyconfigById" parameterType="Long" resultMap="ApplyconfigResult">
+        <include refid="selectApplyconfigVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertApplyconfig" parameterType="Applyconfig">
+        insert into t_applyconfig
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="priceId != null">price_id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="sortNum != null">sort_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="priceId != null">#{priceId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="sortNum != null">#{sortNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApplyconfig" parameterType="Applyconfig">
+        update t_applyconfig
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="priceId != null">price_id = #{priceId},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="sortNum != null">sort_num = #{sortNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApplyconfigById" parameterType="Long">
+        delete from t_applyconfig where id = #{id}
+    </delete>
+
+    <delete id="deleteApplyconfigByIds" parameterType="String">
+        delete from t_applyconfig where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.guide.mapper.GuideMapper">
+    
+    <resultMap type="Guide" id="GuideResult">
+        <result property="id"    column="id"    />
+        <result property="userNo"    column="user_no"    />
+        <result property="userName"    column="user_name"    />
+        <result property="className"    column="class_name"    />
+        <result property="studentName"    column="student_name"    />
+        <result property="raceName"    column="race_name"    />
+        <result property="raceTime"    column="race_time"    />
+        <result property="weekNum"    column="week_num"    />
+        <result property="modulus"    column="modulus"    />
+        <result property="planNum"    column="plan_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUser"    column="create_user"    />
+    </resultMap>
+
+    <sql id="selectGuideVo">
+        select id, user_no, user_name, class_name, student_name, race_name, race_time, week_num, modulus, plan_num, create_time, create_user from t_guide
+    </sql>
+
+    <select id="selectGuideList" parameterType="Guide" resultMap="GuideResult">
+        <include refid="selectGuideVo"/>
+        <where>  
+            <if test="userNo != null  and userNo != ''"> and user_no = #{userNo}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+            <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
+            <if test="raceName != null  and raceName != ''"> and race_name like concat('%', #{raceName}, '%')</if>
+            <if test="raceTime != null "> and race_time = #{raceTime}</if>
+            <if test="weekNum != null  and weekNum != ''"> and week_num = #{weekNum}</if>
+            <if test="modulus != null "> and modulus = #{modulus}</if>
+            <if test="planNum != null "> and plan_num = #{planNum}</if>
+            <if test="createUser != null "> and create_user = #{createUser}</if>
+        </where>
+    </select>
+    
+    <select id="selectGuideById" parameterType="Long" resultMap="GuideResult">
+        <include refid="selectGuideVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGuide" parameterType="Guide" useGeneratedKeys="true" keyProperty="id">
+        insert into t_guide
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">user_no,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="className != null">class_name,</if>
+            <if test="studentName != null">student_name,</if>
+            <if test="raceName != null">race_name,</if>
+            <if test="raceTime != null">race_time,</if>
+            <if test="weekNum != null">week_num,</if>
+            <if test="modulus != null">modulus,</if>
+            <if test="planNum != null">plan_num,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUser != null">create_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">#{userNo},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="className != null">#{className},</if>
+            <if test="studentName != null">#{studentName},</if>
+            <if test="raceName != null">#{raceName},</if>
+            <if test="raceTime != null">#{raceTime},</if>
+            <if test="weekNum != null">#{weekNum},</if>
+            <if test="modulus != null">#{modulus},</if>
+            <if test="planNum != null">#{planNum},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGuide" parameterType="Guide">
+        update t_guide
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userNo != null">user_no = #{userNo},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="studentName != null">student_name = #{studentName},</if>
+            <if test="raceName != null">race_name = #{raceName},</if>
+            <if test="raceTime != null">race_time = #{raceTime},</if>
+            <if test="weekNum != null">week_num = #{weekNum},</if>
+            <if test="modulus != null">modulus = #{modulus},</if>
+            <if test="planNum != null">plan_num = #{planNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGuideById" parameterType="Long">
+        delete from t_guide where id = #{id}
+    </delete>
+
+    <delete id="deleteGuideByIds" parameterType="String">
+        delete from t_guide where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

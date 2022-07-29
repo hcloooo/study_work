@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.teach.mapper.TheoryTeachMapper">
+    
+    <resultMap type="TheoryTeach" id="TheoryTeachResult">
+        <result property="id"    column="id"    />
+        <result property="courseNo"    column="course_no"    />
+        <result property="courseName"    column="course_name"    />
+        <result property="userNo"    column="user_no"    />
+        <result property="userName"    column="user_name"    />
+        <result property="className"    column="class_name"    />
+        <result property="classPerson"    column="class_person"    />
+        <result property="classTopType"    column="class_top_type"    />
+        <result property="classType"    column="class_type"    />
+        <result property="goodClassType"    column="good_class_type"    />
+        <result property="goodClassTypeNum"    column="good_class_type_num"    />
+        <result property="planNum"    column="plan_num"    />
+        <result property="addScore"    column="add_score"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUser"    column="create_user"    />
+    </resultMap>
+
+    <sql id="selectTheoryTeachVo">
+        select id, course_no, course_name, user_no, user_name, class_name, class_person, class_top_type, class_type, good_class_type, good_class_type_num, plan_num, add_score, create_time, create_user from t_theory_teach
+    </sql>
+
+    <select id="selectTheoryTeachList" parameterType="TheoryTeach" resultMap="TheoryTeachResult">
+        <include refid="selectTheoryTeachVo"/>
+        <where>  
+            <if test="courseNo != null  and courseNo != ''"> and course_no = #{courseNo}</if>
+            <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="userNo != null  and userNo != ''"> and user_no = #{userNo}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+            <if test="classPerson != null "> and class_person = #{classPerson}</if>
+            <if test="classTopType != null  and classTopType != ''"> and class_top_type = #{classTopType}</if>
+            <if test="classType != null  and classType != ''"> and class_type = #{classType}</if>
+            <if test="goodClassType != null  and goodClassType != ''"> and good_class_type = #{goodClassType}</if>
+            <if test="goodClassTypeNum != null "> and good_class_type_num = #{goodClassTypeNum}</if>
+            <if test="planNum != null "> and plan_num = #{planNum}</if>
+            <if test="addScore != null "> and add_score = #{addScore}</if>
+            <if test="createUser != null "> and create_user = #{createUser}</if>
+        </where>
+    </select>
+    
+    <select id="selectTheoryTeachById" parameterType="Long" resultMap="TheoryTeachResult">
+        <include refid="selectTheoryTeachVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTheoryTeach" parameterType="TheoryTeach" useGeneratedKeys="true" keyProperty="id">
+        insert into t_theory_teach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseNo != null">course_no,</if>
+            <if test="courseName != null">course_name,</if>
+            <if test="userNo != null">user_no,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="className != null">class_name,</if>
+            <if test="classPerson != null">class_person,</if>
+            <if test="classTopType != null">class_top_type,</if>
+            <if test="classType != null">class_type,</if>
+            <if test="goodClassType != null">good_class_type,</if>
+            <if test="goodClassTypeNum != null">good_class_type_num,</if>
+            <if test="planNum != null">plan_num,</if>
+            <if test="addScore != null">add_score,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUser != null">create_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseNo != null">#{courseNo},</if>
+            <if test="courseName != null">#{courseName},</if>
+            <if test="userNo != null">#{userNo},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="className != null">#{className},</if>
+            <if test="classPerson != null">#{classPerson},</if>
+            <if test="classTopType != null">#{classTopType},</if>
+            <if test="classType != null">#{classType},</if>
+            <if test="goodClassType != null">#{goodClassType},</if>
+            <if test="goodClassTypeNum != null">#{goodClassTypeNum},</if>
+            <if test="planNum != null">#{planNum},</if>
+            <if test="addScore != null">#{addScore},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTheoryTeach" parameterType="TheoryTeach">
+        update t_theory_teach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseNo != null">course_no = #{courseNo},</if>
+            <if test="courseName != null">course_name = #{courseName},</if>
+            <if test="userNo != null">user_no = #{userNo},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="className != null">class_name = #{className},</if>
+            <if test="classPerson != null">class_person = #{classPerson},</if>
+            <if test="classTopType != null">class_top_type = #{classTopType},</if>
+            <if test="classType != null">class_type = #{classType},</if>
+            <if test="goodClassType != null">good_class_type = #{goodClassType},</if>
+            <if test="goodClassTypeNum != null">good_class_type_num = #{goodClassTypeNum},</if>
+            <if test="planNum != null">plan_num = #{planNum},</if>
+            <if test="addScore != null">add_score = #{addScore},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTheoryTeachById" parameterType="Long">
+        delete from t_theory_teach where id = #{id}
+    </delete>
+
+    <delete id="deleteTheoryTeachByIds" parameterType="String">
+        delete from t_theory_teach where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

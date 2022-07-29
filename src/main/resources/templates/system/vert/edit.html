@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改纵横向业绩奖励')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-vert-edit" th:object="${perfRateVert}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">立项时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="subjectTime" th:value="${#dates.format(perfRateVert.subjectTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题名称：</label>
+                <div class="col-sm-8">
+                    <input name="subjectName" th:field="*{subjectName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题类别：</label>
+                <div class="col-sm-8">
+                    <input name="subjectType" th:field="*{subjectType}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题来源：</label>
+                <div class="col-sm-8">
+                    <input name="subjectFrom" th:field="*{subjectFrom}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">级别：</label>
+                <div class="col-sm-8">
+                    <input name="grade" th:field="*{grade}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">总经费：</label>
+                <div class="col-sm-8">
+                    <input name="totalMoney" th:field="*{totalMoney}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">拟奖励额：</label>
+                <div class="col-sm-8">
+                    <input name="priceAmount" th:field="*{priceAmount}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">院系：</label>
+                <div class="col-sm-8">
+                    <input name="deptId" th:field="*{deptId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">负责人：</label>
+                <div class="col-sm-8">
+                    <input name="userId" th:field="*{userId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题编号：</label>
+                <div class="col-sm-8">
+                    <input name="subjectNo" th:field="*{subjectNo}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/vert";
+        $("#form-vert-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-vert-edit').serialize());
+            }
+        }
+
+        $("input[name='subjectTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

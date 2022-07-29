@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.rateGuide.mapper.PerfRateGuideMapper">
+    
+    <resultMap type="PerfRateGuide" id="PerfRateGuideResult">
+        <result property="id"    column="id"    />
+        <result property="userNo"    column="user_no"    />
+        <result property="userName"    column="user_name"    />
+        <result property="guideWork"    column="guide_work"    />
+        <result property="techWork"    column="tech_work"    />
+        <result property="guideTotal"    column="guide_total"    />
+        <result property="techTotal"    column="tech_total"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateGuideVo">
+        select id, user_no, user_name, guide_work, tech_work, guide_total, tech_total, create_time from t_perf_rate_guide
+    </sql>
+
+    <select id="selectPerfRateGuideList" parameterType="PerfRateGuide" resultMap="PerfRateGuideResult">
+        <include refid="selectPerfRateGuideVo"/>
+        <where>  
+            <if test="userNo != null  and userNo != ''"> and user_no = #{userNo}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="guideWork != null "> and guide_work = #{guideWork}</if>
+            <if test="techWork != null "> and tech_work = #{techWork}</if>
+            <if test="guideTotal != null "> and guide_total = #{guideTotal}</if>
+            <if test="techTotal != null "> and tech_total = #{techTotal}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateGuideById" parameterType="Long" resultMap="PerfRateGuideResult">
+        <include refid="selectPerfRateGuideVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateGuide" parameterType="PerfRateGuide" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_guide
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">user_no,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="guideWork != null">guide_work,</if>
+            <if test="techWork != null">tech_work,</if>
+            <if test="guideTotal != null">guide_total,</if>
+            <if test="techTotal != null">tech_total,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">#{userNo},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="guideWork != null">#{guideWork},</if>
+            <if test="techWork != null">#{techWork},</if>
+            <if test="guideTotal != null">#{guideTotal},</if>
+            <if test="techTotal != null">#{techTotal},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateGuide" parameterType="PerfRateGuide">
+        update t_perf_rate_guide
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userNo != null">user_no = #{userNo},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="guideWork != null">guide_work = #{guideWork},</if>
+            <if test="techWork != null">tech_work = #{techWork},</if>
+            <if test="guideTotal != null">guide_total = #{guideTotal},</if>
+            <if test="techTotal != null">tech_total = #{techTotal},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateGuideById" parameterType="Long">
+        delete from t_perf_rate_guide where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateGuideByIds" parameterType="String">
+        delete from t_perf_rate_guide where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.plat.mapper.PerfRatePlatMapper">
+    
+    <resultMap type="PerfRatePlat" id="PerfRatePlatResult">
+        <result property="id"    column="id"    />
+        <result property="organizer"    column="organizer"    />
+        <result property="projTime"    column="proj_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="projDept"    column="proj_dept"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRatePlatVo">
+        select id, organizer, proj_time, dept_id, user_id, proj_dept, price_amount, create_time from t_perf_rate_plat
+    </sql>
+
+    <select id="selectPerfRatePlatList" parameterType="PerfRatePlat" resultMap="PerfRatePlatResult">
+        <include refid="selectPerfRatePlatVo"/>
+        <where>  
+            <if test="organizer != null  and organizer != ''"> and organizer = #{organizer}</if>
+            <if test="projTime != null "> and proj_time = #{projTime}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="projDept != null  and projDept != ''"> and proj_dept = #{projDept}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRatePlatById" parameterType="Long" resultMap="PerfRatePlatResult">
+        <include refid="selectPerfRatePlatVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRatePlat" parameterType="PerfRatePlat" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_plat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="organizer != null">organizer,</if>
+            <if test="projTime != null">proj_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="projDept != null">proj_dept,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="organizer != null">#{organizer},</if>
+            <if test="projTime != null">#{projTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="projDept != null">#{projDept},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRatePlat" parameterType="PerfRatePlat">
+        update t_perf_rate_plat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="organizer != null">organizer = #{organizer},</if>
+            <if test="projTime != null">proj_time = #{projTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="projDept != null">proj_dept = #{projDept},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRatePlatById" parameterType="Long">
+        delete from t_perf_rate_plat where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRatePlatByIds" parameterType="String">
+        delete from t_perf_rate_plat where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

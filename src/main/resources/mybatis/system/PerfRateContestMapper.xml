@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.proj.project.system.contest.mapper.PerfRateContestMapper">
+    
+    <resultMap type="PerfRateContest" id="PerfRateContestResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="contestName"    column="contest_name"    />
+        <result property="grade"    column="grade"    />
+        <result property="priceBaseGrade"    column="price_base_grade"    />
+        <result property="organizer"    column="organizer"    />
+        <result property="priceTime"    column="price_time"    />
+        <result property="priceGrade"    column="price_grade"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="priceAmount"    column="price_amount"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectPerfRateContestVo">
+        select id, dept_id, contest_name, grade, price_base_grade, organizer, price_time, price_grade, country, province, price_amount, user_id, create_time from t_perf_rate_contest
+    </sql>
+
+    <select id="selectPerfRateContestList" parameterType="PerfRateContest" resultMap="PerfRateContestResult">
+        <include refid="selectPerfRateContestVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="contestName != null  and contestName != ''"> and contest_name like concat('%', #{contestName}, '%')</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+            <if test="priceBaseGrade != null  and priceBaseGrade != ''"> and price_base_grade = #{priceBaseGrade}</if>
+            <if test="organizer != null  and organizer != ''"> and organizer = #{organizer}</if>
+            <if test="priceTime != null "> and price_time = #{priceTime}</if>
+            <if test="priceGrade != null  and priceGrade != ''"> and price_grade = #{priceGrade}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="priceAmount != null "> and price_amount = #{priceAmount}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPerfRateContestById" parameterType="Long" resultMap="PerfRateContestResult">
+        <include refid="selectPerfRateContestVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPerfRateContest" parameterType="PerfRateContest" useGeneratedKeys="true" keyProperty="id">
+        insert into t_perf_rate_contest
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="contestName != null">contest_name,</if>
+            <if test="grade != null">grade,</if>
+            <if test="priceBaseGrade != null">price_base_grade,</if>
+            <if test="organizer != null">organizer,</if>
+            <if test="priceTime != null">price_time,</if>
+            <if test="priceGrade != null">price_grade,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="priceAmount != null">price_amount,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="contestName != null">#{contestName},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="priceBaseGrade != null">#{priceBaseGrade},</if>
+            <if test="organizer != null">#{organizer},</if>
+            <if test="priceTime != null">#{priceTime},</if>
+            <if test="priceGrade != null">#{priceGrade},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="priceAmount != null">#{priceAmount},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePerfRateContest" parameterType="PerfRateContest">
+        update t_perf_rate_contest
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="contestName != null">contest_name = #{contestName},</if>
+            <if test="grade != null">grade = #{grade},</if>
+            <if test="priceBaseGrade != null">price_base_grade = #{priceBaseGrade},</if>
+            <if test="organizer != null">organizer = #{organizer},</if>
+            <if test="priceTime != null">price_time = #{priceTime},</if>
+            <if test="priceGrade != null">price_grade = #{priceGrade},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="priceAmount != null">price_amount = #{priceAmount},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePerfRateContestById" parameterType="Long">
+        delete from t_perf_rate_contest where id = #{id}
+    </delete>
+
+    <delete id="deletePerfRateContestByIds" parameterType="String">
+        delete from t_perf_rate_contest where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
